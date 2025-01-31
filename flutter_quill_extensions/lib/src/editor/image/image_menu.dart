@@ -142,90 +142,90 @@ class ImageOptionsMenu extends StatelessWidget {
                 await config.onImageRemovedCallback.call(imageSource);
               },
             ),
-          ListTile(
-            leading: const Icon(Icons.save),
-            title: Text(context.loc.save),
-            onTap: () async {
-              final messenger = ScaffoldMessenger.of(context);
-              final localizations = context.loc;
-              Navigator.of(context).pop();
+          // ListTile(
+          //   leading: const Icon(Icons.save),
+          //   title: Text(context.loc.save),
+          //   onTap: () async {
+          //     final messenger = ScaffoldMessenger.of(context);
+          //     final localizations = context.loc;
+          //     Navigator.of(context).pop();
 
-              SaveImageResult? result;
-              try {
-                result = await ImageSaver.instance.saveImage(
-                  imageUrl: imageSource,
-                  imageProvider: imageProvider,
-                  prefersGallerySave: prefersGallerySave,
-                );
-              } on GalleryImageSaveAccessDeniedException {
-                messenger.showSnackBar(SnackBar(
-                    content: Text(
-                  localizations.saveImagePermissionDenied,
-                )));
-                return;
-              }
+          //     SaveImageResult? result;
+          //     try {
+          //       result = await ImageSaver.instance.saveImage(
+          //         imageUrl: imageSource,
+          //         imageProvider: imageProvider,
+          //         prefersGallerySave: prefersGallerySave,
+          //       );
+          //     } on GalleryImageSaveAccessDeniedException {
+          //       messenger.showSnackBar(SnackBar(
+          //           content: Text(
+          //         localizations.saveImagePermissionDenied,
+          //       )));
+          //       return;
+          //     }
 
-              if (result == null) {
-                messenger.showSnackBar(SnackBar(
-                    content: Text(
-                  localizations.errorUnexpectedSavingImage,
-                )));
-                return;
-              }
+          //     if (result == null) {
+          //       messenger.showSnackBar(SnackBar(
+          //           content: Text(
+          //         localizations.errorUnexpectedSavingImage,
+          //       )));
+          //       return;
+          //     }
 
-              if (kIsWeb) {
-                messenger.showSnackBar(SnackBar(
-                    content: Text(localizations.successImageDownloaded)));
-                return;
-              }
+          //     if (kIsWeb) {
+          //       messenger.showSnackBar(SnackBar(
+          //           content: Text(localizations.successImageDownloaded)));
+          //       return;
+          //     }
 
-              if (result.isGallerySave) {
-                messenger.showSnackBar(SnackBar(
-                  content: Text(localizations.successImageSavedGallery),
-                  action: SnackBarAction(
-                    label: localizations.openGallery,
-                    onPressed: () =>
-                        QuillNativeProvider.instance.openGalleryApp(),
-                  ),
-                ));
-                return;
-              }
+          //     if (result.isGallerySave) {
+          //       messenger.showSnackBar(SnackBar(
+          //         content: Text(localizations.successImageSavedGallery),
+          //         action: SnackBarAction(
+          //           label: localizations.openGallery,
+          //           onPressed: () =>
+          //               QuillNativeProvider.instance.openGalleryApp(),
+          //         ),
+          //       ));
+          //       return;
+          //     }
 
-              if (isDesktopApp) {
-                final imageFilePath = result.imageFilePath;
-                if (imageFilePath == null) {
-                  // User canceled the system save dialog.
-                  return;
-                }
+          //     if (isDesktopApp) {
+          //       final imageFilePath = result.imageFilePath;
+          //       if (imageFilePath == null) {
+          //         // User canceled the system save dialog.
+          //         return;
+          //       }
 
-                messenger.showSnackBar(
-                  SnackBar(
-                    content: Text(localizations.successImageSaved),
-                    // On macOS the app only has access to the picked file from the system save
-                    // dialog and not the directory where it was saved.
-                    // Opening the directory of that file requires entitlements on macOS
-                    // See https://pub.dev/packages/url_launcher#macos-file-access-configuration
-                    // Open the saved image file instead of the directory
-                    action: defaultTargetPlatform == TargetPlatform.macOS
-                        ? SnackBarAction(
-                            label: localizations.openFile,
-                            onPressed: () => launchUrl(Uri.file(imageFilePath)),
-                          )
-                        : SnackBarAction(
-                            label: localizations.openFileLocation,
-                            onPressed: () => launchUrl(
-                                Uri.directory(p.dirname(imageFilePath))),
-                          ),
-                  ),
-                );
+          //       messenger.showSnackBar(
+          //         SnackBar(
+          //           content: Text(localizations.successImageSaved),
+          //           // On macOS the app only has access to the picked file from the system save
+          //           // dialog and not the directory where it was saved.
+          //           // Opening the directory of that file requires entitlements on macOS
+          //           // See https://pub.dev/packages/url_launcher#macos-file-access-configuration
+          //           // Open the saved image file instead of the directory
+          //           action: defaultTargetPlatform == TargetPlatform.macOS
+          //               ? SnackBarAction(
+          //                   label: localizations.openFile,
+          //                   onPressed: () => launchUrl(Uri.file(imageFilePath)),
+          //                 )
+          //               : SnackBarAction(
+          //                   label: localizations.openFileLocation,
+          //                   onPressed: () => launchUrl(
+          //                       Uri.directory(p.dirname(imageFilePath))),
+          //                 ),
+          //         ),
+          //       );
 
-                return;
-              }
+          //       return;
+          //     }
 
-              throw StateError(
-                  'Image save result is not handled on $defaultTargetPlatform');
-            },
-          ),
+          //     throw StateError(
+          //         'Image save result is not handled on $defaultTargetPlatform');
+          //   },
+          // ),
           ListTile(
             leading: const Icon(Icons.zoom_in),
             title: Text(context.loc.zoom),
